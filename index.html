@@ -80,7 +80,7 @@ $(document).ready(function(){
         if (!gameOver) {
             col = event.currentTarget.cellIndex;
             target = $(event.target);
-            board = game.functions.play(board, player, target.id, col);
+            board = game.functions.play(board, player, col);
             winner = game.functions.checkWin(board, player);
             if (winner) {
                 $("#result span").text(player + " wins!!!");
@@ -92,5 +92,6 @@ $(document).ready(function(){
     });
 });
 </script>
+<script type="text/javascript" src="js/game.tests.js"></script>
 </body>
 </html>

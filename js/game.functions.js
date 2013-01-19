@@ -41,7 +41,6 @@ game.functions = function() {
         colElements = $(changeCol);
         initValue = colElements.length - 1;
         for (var i = initValue; i >= 0; i--) {
-            console.log(colElements[i].id)
             currentElement = $("#"+colElements[i].id);
             if (!currentElement.hasClass(".player1") && !currentElement.hasClass(".player2")) {
                 currentElement.addClass(player);
@@ -53,7 +52,7 @@ game.functions = function() {
      * Updates the abstract board and manages the 
      * html presentation of the cells
      * */
-    function play(board, player, elemID, column) {
+    function play(board, player, column) {
         matrixCol = board[column];
 
         counter = 0;
@@ -144,10 +143,6 @@ game.functions = function() {
         return next1 && next2 && next3;
     }
     function checkDiagonalRight(board, player, x, y) {
-        console.log(board[x + 1][y + 1]);
-        console.log(board[x + 2][y + 2]);
-        console.log(board[x + 3][y + 3]);
-
         next1 = board[x + 1][y + 1] == player;
         next2 = board[x + 2][y + 2] == player;
         next3 = board[x + 3][y + 3] == player;
@@ -205,8 +200,8 @@ game.functions = function() {
         shiftPlayer: function(current) {
             return shiftPlayer(current);
         },
-        play: function(board, player, elemID, column) {
-            return play(board, player, elemID, column);
+        play: function(board, player, column) {
+            return play(board, player, column);
         },
         checkWin: function(board, player) {
             return checkWin(board, player);
