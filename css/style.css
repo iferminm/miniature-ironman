@@ -1,0 +1,27 @@
+#game {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#board-holder {
+    width: 100%;
+    height: auto;
+}
+.player1 {
+    background-color: red;
+}
+.player2 {
+    background-color: black;
+}
+#board-holder table {
+    border: 1px solid black;
+    width: 100%;
+}
+#board-holder table td {
+    border: 1px solid black;
+    height: 30px;
+    width: 30px;
+}
+#r1 td:hover {
+    background-color: #CCC;
+}
