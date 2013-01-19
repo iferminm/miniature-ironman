@@ -26,6 +26,7 @@ game.functions = function() {
                 [0, 0, 0, 0, 0, 0],
             ];
             player = "player1";
+            gameOver = false;
             playCount = 0;
             return board;
     }
@@ -98,6 +99,7 @@ game.functions = function() {
         for (var y = 0; y < ylimit; y++) {
             for (var x = 0; x <= xlimit; x++) {
                 if (board[x][y] == player && hCheckRow(board, x, y, player)) {
+                    gameOver = true;
                     return true;
                 }
             };
@@ -121,6 +123,7 @@ game.functions = function() {
         for (var x = 0; x < xlimit; x++) {
             for (var y = 0; y <= ylimit; y++) {
                 if (board[x][y] == player && vCheckRow(board, x, y, player)) {
+                    gameOver = true;
                     return true;
                 }
             };
@@ -128,6 +131,46 @@ game.functions = function() {
         return false;
     }
     /************************************************************************************/
+    /* This segment checks for diagonal winning
+     * I tried to restrict the search space to optimize it a little
+     * bit, but everything still n^2.
+     * *********************************************************************************/
+    // Same as before, could be achieved with a loop
+    // and parametrized with settings["winWith"]
+    function checkDiagonalLeft(board, player, x, y) {
+        console.log(board[x - 1][y + 1]);
+        console.log(board[x - 2][y + 2]);
+        console.log(board[x - 3][y + 3]);
+
+        next1 = board[x - 1][y + 1] == player;
+        next2 = board[x - 2][y + 2] == player;
+        next3 = board[x - 3][y + 3] == player;
+        return next1 && next2 && next3;
+    }
+    function checkDiagonalRight(board, player, x, y) {
+        return false;
+    }
+    function checkDiagonalWin(board, player) {
+        xlimit = settings["xlen"] - 1;
+        ylimit = settings["ylen"] - settings["winWith"];
+        for (var y = 0; y <= ylimit; y++) {
+            for (var x = 0; x <= xlimit; x++) {
+                if (board[x][y] == player) {
+                    if (x >= settings["winWith"] - 1) {
+                        console.log("revisare a la izquierda");
+                        console.log("x=" + x + ", y=" + y + " value = " + player);
+                        dl = checkDiagonalLeft(board, player, x, y);
+                        if (dl) return true;
+                    }
+                    if (xlimit - x > settings["winWith"]) {
+//                        dr = checkDiagonalRight(board, player, x, y);
+//                        if (dr) return true;
+                    }
+                }
+            };
+        };
+        return false;
+    }
     /************************************************************************************/
     /*
      * Checks if the current player won
@@ -148,7 +191,8 @@ game.functions = function() {
             playerValue = players[player];
             h = checkHorizontalWin(board, playerValue);
             v = checkVerticalWin(board, playerValue);
-            return h || v;
+            d = checkDiagonalWin(board, playerValue);
+            return h || v || d;
         }
     }
 
