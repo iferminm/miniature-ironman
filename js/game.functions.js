@@ -31,6 +31,8 @@ game.functions = function() {
     }
     /*
      * Updates the visual board
+     * DOM manipulation is expensive, but
+     * didn't find out another way to do this
      * */
     function updateView(column, player) {
         changeCol = ".col" + column;
@@ -79,6 +81,76 @@ game.functions = function() {
         }
         return "player1";
     }
+    /*
+     * This segment detects horizontal winning
+     * *****************************************************/
+    // Could be done with a cycle and this way 
+    // it is configurable throught settings[withWith]
+    function hCheckRow(board, X, Y, player) {
+        next1 = board[X + 1][Y] == player;
+        next2 = board[X + 2][Y] == player;
+        next3 = board[X + 3][Y] == player;
+        return next1 && next2 && next3;
+    }
+    function checkHorizontalWin(board, player) {
+        xlimit = settings["xlen"] - settings["winWith"];
+        ylimit = settings["ylen"];
+        for (var y = 0; y < ylimit; y++) {
+            for (var x = 0; x <= xlimit; x++) {
+                if (board[x][y] == player && hCheckRow(board, x, y, player)) {
+                    return true;
+                }
+            };
+        };
+        return false;
+    }
+    /*
+     * This segment detects vertical winning
+     * *****************************************************/
+    // Could be done with a cycle and this way 
+    // it is configurable throught settings[withWith], same as before
+    function vCheckRow(board, X, Y, player) {
+        next1 = board[X][Y + 1] == player;
+        next2 = board[X][Y + 2] == player;
+        next3 = board[X][Y + 3] == player;
+        return next1 && next2 && next3;
+    }
+    function checkVerticalWin(board, player) {
+        xlimit = settings["xlen"];
+        ylimit = settings["ylen"] - settings["winWith"];
+        for (var x = 0; x < xlimit; x++) {
+            for (var y = 0; y <= ylimit; y++) {
+                if (board[x][y] == player && vCheckRow(board, x, y, player)) {
+                    return true;
+                }
+            };
+        };
+        return false;
+    }
+    /************************************************************************************/
+    /************************************************************************************/
+    /*
+     * Checks if the current player won
+     * I know this algorithm is very expensive
+     * I could have used another data structure to
+     * store the player's moves and chain them
+     * but I've already started and time is limited so
+     * I have to stick with this naive algorithm.
+     * I evaluate 4 x 4 sub-matrices checking for a 1 1 1 1
+     * or a 2 2 2 2.
+     * or at least lookup for the value and then check
+     * on all directions
+     * */
+    function checkWin(board, player) {
+        // The min number of turns to achieve
+        // four in line is 7
+        if (playCount >= 7) {
+            playerValue = players[player];
+            h = checkHorizontalWin(board, playerValue);
+            v = checkVerticalWin(board, playerValue);
+            return h || v;
+        }
+    }
 
     return {
         initGame: function() {
@@ -89,6 +161,9 @@ game.functions = function() {
         },
         play: function(board, player, elemID, column) {
             return play(board, player, elemID, column);
+        },
+        checkWin: function(board, player) {
+            return checkWin(board, player);
         }
     }
 }()
