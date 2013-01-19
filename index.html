@@ -8,6 +8,7 @@
 </head>
 <body>
     <section id="game">
+        <h1>Connect Four</h1>
         <div id="board-holder">
             <table id="board">
                 <tr id="r1">
@@ -66,6 +67,10 @@
                 </tr>
             </table>
         </div>
+        <div id="result">
+            <h1> Game Over </h1>
+            <span></span>
+        </div>
     </section>
 <script type="text/javascript" src="js/game.functions.js"></script>
 <script type="text/javascript">
@@ -78,7 +83,8 @@ $(document).ready(function(){
             board = game.functions.play(board, player, target.id, col);
             winner = game.functions.checkWin(board, player);
             if (winner) {
-                console.log(player + " wins!!");
+                $("#result span").text(player + " wins!!!");
+                $("#result").show();
             } else {
                 player = game.functions.shiftPlayer(player);
             }
