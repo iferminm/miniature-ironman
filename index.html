@@ -9,7 +9,7 @@
 <body>
     <section id="game">
         <div id="board-holder">
-            <table>
+            <table id="board">
                 <tr id="r1">
                     <td id="c1-1"></td>
                     <td id="c1-2"></td>
@@ -67,5 +67,17 @@
             </table>
         </div>
     </section>
+<script type="text/javascript" src="js/game.functions.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    game.functions.initGame();
+    $("#board td").click(function(event) {
+        col = event.currentTarget.cellIndex;
+        target = $(event.target);
+        board = game.functions.play(board, player, target.id, col);
+        player = game.functions.shiftPlayer(player);
+    });
+});
+</script>
 </body>
 </html>
