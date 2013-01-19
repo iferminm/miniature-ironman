@@ -26,16 +26,25 @@ game.functions = function() {
                 [0, 0, 0, 0, 0, 0],
             ];
             player = "player1";
+            playCount = 0;
             return board;
     }
     /*
      * Updates the visual board
      * */
-    function updateView(row, column, player) {
-        changeID = "c" + column;
-        console.log(row);
-        console.log(column);
-        console.log(changeID);
+    function updateView(column, player) {
+        changeCol = ".col" + column;
+        console.log(changeCol);
+        colElements = $(changeCol);
+        initValue = colElements.length - 1;
+        for (var i = initValue; i >= 0; i--) {
+            console.log(colElements[i].id)
+            currentElement = $("#"+colElements[i].id);
+            if (!currentElement.hasClass(".player1") && !currentElement.hasClass(".player2")) {
+                currentElement.addClass(player);
+                break;
+            }
+        };
     }
     /*
      * Updates the abstract board and manages the 
@@ -44,20 +53,21 @@ game.functions = function() {
     function play(board, player, elemID, column) {
         matrixCol = board[column];
 
-        counter = 0
+        counter = 0;
         if (matrixCol[0] == 0) {
             matrixCol[0] = players[player];
         } else if (!matrixCol[matrixCol.length - 1]){
             while (counter < settings["ylen"]) {
                 if (matrixCol[counter]) {
-                    counter = counter + 1;
+                    counter++;
                 } else {
                     break;
                 }
             }
             matrixCol[counter] = players[player];
         }
-        updateView(counter + 1, column + 1, player);
+        updateView(column + 1, player);
+        playCount++;
         return board;
     }
     /*
