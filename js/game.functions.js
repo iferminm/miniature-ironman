@@ -138,33 +138,35 @@ game.functions = function() {
     // Same as before, could be achieved with a loop
     // and parametrized with settings["winWith"]
     function checkDiagonalLeft(board, player, x, y) {
-        console.log(board[x - 1][y + 1]);
-        console.log(board[x - 2][y + 2]);
-        console.log(board[x - 3][y + 3]);
-
         next1 = board[x - 1][y + 1] == player;
         next2 = board[x - 2][y + 2] == player;
         next3 = board[x - 3][y + 3] == player;
         return next1 && next2 && next3;
     }
     function checkDiagonalRight(board, player, x, y) {
-        return false;
+        console.log(board[x + 1][y + 1]);
+        console.log(board[x + 2][y + 2]);
+        console.log(board[x + 3][y + 3]);
+
+        next1 = board[x + 1][y + 1] == player;
+        next2 = board[x + 2][y + 2] == player;
+        next3 = board[x + 3][y + 3] == player;
+        return next1 && next2 && next3;
+
     }
     function checkDiagonalWin(board, player) {
-        xlimit = settings["xlen"] - 1;
+        xlimit = settings["xlen"];
         ylimit = settings["ylen"] - settings["winWith"];
         for (var y = 0; y <= ylimit; y++) {
-            for (var x = 0; x <= xlimit; x++) {
+            for (var x = 0; x < xlimit; x++) {
                 if (board[x][y] == player) {
                     if (x >= settings["winWith"] - 1) {
-                        console.log("revisare a la izquierda");
-                        console.log("x=" + x + ", y=" + y + " value = " + player);
                         dl = checkDiagonalLeft(board, player, x, y);
                         if (dl) return true;
                     }
                     if (xlimit - x > settings["winWith"]) {
-//                        dr = checkDiagonalRight(board, player, x, y);
-//                        if (dr) return true;
+                        dr = checkDiagonalRight(board, player, x, y);
+                        if (dr) return true;
                     }
                 }
             };

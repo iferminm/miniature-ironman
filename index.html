@@ -72,16 +72,17 @@
 $(document).ready(function(){
     game.functions.initGame();
     $("#board td").click(function(event) {
-        col = event.currentTarget.cellIndex;
-        target = $(event.target);
-        board = game.functions.play(board, player, target.id, col);
-        winner = game.functions.checkWin(board, player);
-        if (winner) {
-            console.log(player + " wins!!");
-        } else {
-            player = game.functions.shiftPlayer(player);
-        }
-        
+        if (!gameOver) {
+            col = event.currentTarget.cellIndex;
+            target = $(event.target);
+            board = game.functions.play(board, player, target.id, col);
+            winner = game.functions.checkWin(board, player);
+            if (winner) {
+                console.log(player + " wins!!");
+            } else {
+                player = game.functions.shiftPlayer(player);
+            }
+        }   
     });
 });
 </script>
